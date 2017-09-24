@@ -1,0 +1,18 @@
+body {
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    color: white;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.input-field label {
+    color: White !important;
+}
+
+input[type=text]{
+    background-color: White;
+    color: black;
+}

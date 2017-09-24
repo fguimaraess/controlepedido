@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+    <script src="js/firebase.js" charset="utf-8"></script>
+    <title>Controle Pedido</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="apple-touch-icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="js/sweetalert.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="css/sweetalert.css"> </head>
+
+<body>
+    <div id="listaPedido">
+        <span style="padding: 20px;">LISTA DE PEDIDOS</span>
+        <p>
+            <div class="row">
+                <div class="input-field col s4">
+                    De:<input type="date" class="datepicker" id="data-inicio-field">
+                </div>
+                <div class="input-field col s4">
+                    Até:<input type="date" class="datepicker" id="data-fim-field">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <table class="table-responsive display highlight" id="table-clubes">
+                        <thead>
+                            <tr id="template-linha-clube">
+                                <th data-field="id" hidden style="display:none">Id</th>
+                                <th data-field="nome-clube">Cliente</th>
+                                <th data-field="atletas-clube">Data Criação</th>
+                                <th data-field="atletas-clube">Data Entrega</th>
+                                <th data-field="sigla-clube">Valor</th>
+                                <th data-field="atletas-acoes">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-pedido"> </tbody>
+                    </table>
+                </div>
+            </div>
+            <a class="waves-effect waves-light btn" style="background-color: #039be5;" id="btnCriarNovoPedido">Novo Pedido</a>
+    </div>
+
+    <div id="listaDetalhePedido" hidden>
+        <span style="padding: 20px;">DETALHE DO PEDIDO</span>
+        <p>
+            <div class="row">
+                <div class="col s3">
+                    Nome do Cliente:
+                </div>
+                <div class="col s8">
+                    <span id="nomeCliente"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s3">
+                    Data de Criação:
+                </div>
+                <div class="col s8">
+                    <span id="dataCriacao"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s3">
+                    Data de Entrega:
+                </div>
+                <div class="col s8">
+                    <span id="dataEntrega"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Kibe:
+                </div>
+                <div class="col s2">
+                    <span id="qtdKibe"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorKibe"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Bolinha de Queijo:
+                </div>
+                <div class="col s2">
+                    <span id="qtdBolinhaQueijo"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorBolinhaQueijo"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Enr. Salsicha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdSalsicha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorSalsicha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    Coxinha:
+                </div>
+                <div class="col s2">
+                    <span id="qtdCoxinha"></span>
+                </div>
+                <div class="col s2">
+                    <span id="valorCoxinha"></span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col s2">
+                    VALOR TOTAL:
+                </div>
+
+                <div class="col s2">
+                    <span id="valorTotal"></span>
+                </div>
+            </div>
+            <a class="waves-effect waves-light btn" style="background-color: #039be5;" id="btnVoltarListaPedido">VOLTAR</a>
+    </div>
+    </div>
+
+    <!--CRIA PEDIDO-->
+    <div id="criarPedido" hidden>
+        <span style="padding: 20px;">CONTROLE DE PEDIDOS</span>
+        <div class="row">
+            <p>
+                <form class="col s10">
+                    <!-- Nome e telefone cliente -->
+                    <div class="row">
+                        <div class="input-field col s6">
+                            Nome do Cliente:<input placeholder="Nome do Cliente" id="pedidoNomeCliente" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            Telefone do Cliente:<input placeholder="Telefone do Cliente" id="pedidoTelCliente" type="text"
+                                class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Data de criacao -->
+                    <div class="row">
+                        <div class="input-field col s4">
+                            Data de Criacao:<input type="date" class="datepicker" id="pedidoDataCriacao">
+                        </div>
+                        <div class="input-field col s4">
+                            Data de Entrega:<input type="date" class="datepicker" id="pedidoDataEntrega">
+                        </div>
+                    </div>
+
+                    <!-- Valor Pago e a Pagar-->
+                    <div class="row">
+                        <div class="input-field col s6">
+                            Valor Pago:<input placeholder="Valor Pago" id="pedidoValorPago" type="text" class="validate">
+                        </div>
+
+                        <div class="input-field col s6">
+                            Valor Restante a Pagar:<input placeholder="Valor a Pagar" id="pedidoValoraPagar" type="text"
+                                class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Coxinha -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Coxinha:
+                            <input placeholder="Quantidade" id="qtdCoxinha" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorCoxinha" type="text" class="validate">
+                        </div>
+                    </div>
+                    <!-- Kibe -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Kibe:
+                            <input placeholder="Quantidade" id="qtdKibe" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorKibe" type="text" class="validate">
+                        </div>
+                    </div>
+                    <!-- Carne -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Carne:
+                            <input placeholder="Quantidade" id="qtdCarne" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorCarne" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Milho -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Milho:
+                            <input placeholder="Quantidade" id="qtdMilho" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorMilho" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- CarneSeca -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Carne Seca:
+                            <input placeholder="Quantidade" id="qtdCarneSeca" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorCarneSeca" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Queijo Simples -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Q. Simples:
+                            <input placeholder="Quantidade" id="qtdQSimples" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorQSimples" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Queijo com Alho -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Q. C Alho:
+                            <input placeholder="Quantidade" id="qtdQAlho" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorQAlho" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Queijo com Oregano -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Q. C Oregano:
+                            <input placeholder="Quantidade" id="qtdQOregano" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorQOregano" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Queijo com Azeitona -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Q. C Azeitona:
+                            <input placeholder="Quantidade" id="qtdQAzeitona" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorQAzeitona" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Bacalhau -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Bacalhau:
+                            <input placeholder="Quantidade" id="qtdBacalhau" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorBacalhau" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Calabresa -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Calabresa:
+                            <input placeholder="Quantidade" id="qtdCalabresa" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorCalabresa" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Salsicha -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Salsicha:
+                            <input placeholder="Quantidade" id="qtdSalsicha" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorSalsicha" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Presunto -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Presunto:
+                            <input placeholder="Quantidade" id="qtdPresunto" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorPresunto" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Camarao -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Camarão:
+                            <input placeholder="Quantidade" id="qtdCamarao" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorCamarao" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Churros Doce de Leite -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            C. D. Leite:
+                            <input placeholder="Quantidade" id="qtdChurrosLeite" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorChurrosLeite" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Churros Doce de Leite e Chocolate -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            C. Choc. D. Leite:
+                            <input placeholder="Quantidade" id="qtdChurrosChocLeite" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorChurrosChocLeite" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Churros Chocolate -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            C. Chocolate:
+                            <input placeholder="Quantidade" id="qtdChurrosChocolate" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorChurrosChocolate" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Variados -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Variados:
+                            <input placeholder="Quantidade" id="qtdVariados" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorVariados" type="text" class="validate">
+                        </div>
+                    </div>
+
+                    <!-- Aipim Carne Seca -->
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Aipim Carne Seca:
+                            <input placeholder="Quantidade" id="qtdAipimCarneSeca" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s3">
+                            Valor:<input placeholder="Valor" id="valorAipimCarneSeca" type="text" class="validate">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s3">
+                            Valor Total:<input placeholder="Valor Total" id="valorTotalPedido" type="text" class="validate">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a class="waves-effect waves-light btn" style="background-color: #039be5;" id="btnCriarPedido">CRIAR PEDIDO</a>
+                        <a class="waves-effect waves-light btn" style="background-color: #039be5;" id="btnVoltar">VOLTAR</a>
+                    </div>
+                </form>
+        </div>
+    </div>
+</body>
+<footer>
+    <script src="js/index.js" charset="utf-8"></script>
+</footer>
+
+</html>
