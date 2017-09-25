@@ -55,6 +55,10 @@ var page = {
     valorVariadosLista: document.querySelector("#valorVariadosLista"),
     qtdAipimCarneSecaLista: document.querySelector("#qtdAipimCarneSecaLista"),
     valorAipimCarneSecaLista: document.querySelector("#valorAipimCarneSecaLista"),
+    qtdAipimCarneLista: document.querySelector("#qtdAipimCarneLista"),
+    valorAipimCarneLista: document.querySelector("#valorAipimCarneLista"),
+    qtdPizzaLista: document.querySelector("#qtdPizzaLista"),
+    valorPizzaLista: document.querySelector("#valorPizzaLista"),
     valorTotal: document.querySelector("#valorTotal"),
     obsPedidoLista: document.querySelector("#obsPedidoLista")
 }
@@ -106,6 +110,10 @@ var pageCriarPedido = {
     valorVariados: document.querySelector("#valorVariados"),
     qtdAipimCarneSeca: document.querySelector("#qtdAipimCarneSeca"),
     valorAipimCarneSeca: document.querySelector("#valorAipimCarneSeca"),
+    qtdAipimCarne: document.querySelector("#qtdAipimCarne"),
+    valorAipimCarne: document.querySelector("#valorAipimCarne"),
+    qtdPizza: document.querySelector("#qtdPizza"),
+    valorPizza: document.querySelector("#valorPizza"),
     valorTotalPedido: document.querySelector("#valorTotalPedido"),
     obsPedido: document.querySelector("#obsPedido")
 }
@@ -113,51 +121,46 @@ var pageCriarPedido = {
 window.addEventListener('load', getPedidos);
 
 function getPedidos() {
-    page.database.ref(page.databaseRef).once('value').then(function(snapshot){
-        snapshot.forEach(function(pedidoRef) {
+    page.database.ref(page.databaseRef).once('value').then(function (snapshot) {
+        snapshot.forEach(function (pedidoRef) {
             var tempPedido = pedidoRef.val();
             tempPedido.uid = pedidoRef.key;
             page.pedidos[pedidoRef.key] = tempPedido;
-            preencheTabelaPedido(tempPedido);       
+            preencheTabelaPedido(tempPedido);
         });
     });
 }
 
-page.btnCriarNovoPedido.addEventListener('click', function(){
+page.btnCriarNovoPedido.addEventListener('click', function () {
     $("#listaPedido").hide();
     $("#criarPedido").show();
 });
 
-page.btnVoltarListaPedido.addEventListener('click', function(){
+page.btnVoltarListaPedido.addEventListener('click', function () {
     $("#listaDetalhePedido").hide();
     $("#listaPedido").show();
 });
 
-page.btnVoltar.addEventListener('click', function(){
+page.btnVoltar.addEventListener('click', function () {
     $("#criarPedido").hide();
     $("#listaPedido").show();
 });
 
-page.btnBuscarPedido.addEventListener('click', function(){
+page.btnBuscarPedido.addEventListener('click', function () {
     limparTabelaPedido();
     var dataCriacao = $(page.searchPedidoData).val();
-    var dataCriacaoFormat = new Date(dataCriacao);
-    
-    for(var key in page.pedidos) {
-        var dataFormatada = new Date(page.pedidos[key].datacriacao);
-        if(dataCriacaoFormat == dataFormatada)
-        {
-            preencheTabelaPedido(page.pedidos[key]);        
-            console.log(page.pedidos[key].datacriacao);
+    for (var key in page.pedidos) {
+        var dataPedido = page.pedidos[key].pedidoDataCriacao;
+        if (dataCriacao == dataPedido) {
+            preencheTabelaPedido(page.pedidos[key]);
+        }
+        if (dataCriacao == "") {
+            preencheTabelaPedido(page.pedidos[key]);
+        }
     }
-    if(dataCriacao == "") {
-        preencheTabelaPedido(page.pedidos[key]);   
-    }
-}
-    console.log(page.searchPedidoData.value);
 });
 
-page.btnCriarPedido.addEventListener('click', function(){
+page.btnCriarPedido.addEventListener('click', function () {
     var tempPedido = {
         pedidoNomeCliente: pageCriarPedido.pedidoNomeCliente.value,
         pedidoTelCliente: pageCriarPedido.pedidoTelCliente.value,
@@ -184,7 +187,7 @@ page.btnCriarPedido.addEventListener('click', function(){
         qtdQAzeitona: pageCriarPedido.qtdQAzeitona.value,
         valorQAzeitona: pageCriarPedido.valorQAzeitona.value,
         qtdTopBacalhau: pageCriarPedido.qtdTopBacalhau.value,
-        valorTopBacalhau:pageCriarPedido.valorTopBacalhau.value,
+        valorTopBacalhau: pageCriarPedido.valorTopBacalhau.value,
         qtdBacalhau: pageCriarPedido.qtdBacalhau.value,
         valorBacalhau: pageCriarPedido.valorBacalhau.value,
         qtdCalabresa: pageCriarPedido.qtdCalabresa.value,
@@ -196,17 +199,21 @@ page.btnCriarPedido.addEventListener('click', function(){
         qtdCamarao: pageCriarPedido.qtdCamarao.value,
         valorCamarao: pageCriarPedido.valorCamarao.value,
         qtdChurrosLeite: pageCriarPedido.qtdChurrosLeite.value,
-        valorChurrosLeite:pageCriarPedido.valorChurrosLeite.value,
-        qtdChurrosChocLeite:pageCriarPedido.qtdChurrosChocLeite.value,
-        valorChurrosChocLeite:pageCriarPedido.valorChurrosChocLeite.value,
-        qtdChurrosChocolate:pageCriarPedido.qtdChurrosChocolate.value,
-        valorChurrosChocolate:pageCriarPedido.valorChurrosChocolate.value,
+        valorChurrosLeite: pageCriarPedido.valorChurrosLeite.value,
+        qtdChurrosChocLeite: pageCriarPedido.qtdChurrosChocLeite.value,
+        valorChurrosChocLeite: pageCriarPedido.valorChurrosChocLeite.value,
+        qtdChurrosChocolate: pageCriarPedido.qtdChurrosChocolate.value,
+        valorChurrosChocolate: pageCriarPedido.valorChurrosChocolate.value,
         qtdVariados: pageCriarPedido.qtdVariados.value,
         valorVariados: pageCriarPedido.valorVariados.value,
-        qtdAipimCarneSeca:pageCriarPedido.qtdAipimCarneSeca.value,
-        valorAipimCarneSeca:pageCriarPedido.valorAipimCarneSeca.value,
+        qtdAipimCarneSeca: pageCriarPedido.qtdAipimCarneSeca.value,
+        valorAipimCarneSeca: pageCriarPedido.valorAipimCarneSeca.value,
+        qtdAipimCarne: pageCriarPedido.qtdAipimCarne.value,
+        valorAipimCarne: pageCriarPedido.valorAipimCarne.value,
+        qtdPizza: pageCriarPedido.qtdPizza.value,
+        valorPizza: pageCriarPedido.valorPizza.value,
         obsPedido: pageCriarPedido.obsPedido.value,
-        valorTotalPedido:pageCriarPedido.valorTotalPedido.value
+        valorTotalPedido: pageCriarPedido.valorTotalPedido.value
     }
     criarPedido(tempPedido);
 });
@@ -232,72 +239,75 @@ function criarPedido(tempPedido) {
 }
 
 function verPedido(idPedido) {
-    for(var key in page.pedidos) {
-        if(idPedido == page.pedidos[key].uid) {
+    for (var key in page.pedidos) {
+        if (idPedido == page.pedidos[key].uid) {
             preencheCamposDetalhePedido(page.pedidos[key]);
         }
     }
 }
 
 function excluirPedido(idPedido) {
-    page.database.ref(page.databaseRef+idPedido).remove().then(swal("", "Pedido excluído", "error"));
+    page.database.ref(page.databaseRef + idPedido).remove().then(swal("", "Pedido excluído", "error"));
     limparTabelaPedido();
     getPedidos();
 }
 
-function preencheCamposDetalhePedido(tempPedido)
-{
+function preencheCamposDetalhePedido(tempPedido) {
     $("#listaPedido").hide();
     $("#listaDetalhePedido").show();
-    if(tempPedido.pedidoValorPago == undefined) tempPedido.pedidoValorPago = 0;
-        page.nomeCliente.innerHTML = tempPedido.pedidoNomeCliente;
-        page.telCliente.innerHTML = "TEL: " + tempPedido.pedidoTelCliente;       
-        page.dataCriacao.innerHTML = tempPedido.pedidoDataCriacao;
-        page.dataEntrega.innerHTML = tempPedido.pedidoDataEntrega;
-        page.valorPago.innerHTML = "R$" + tempPedido.pedidoValorPago;
-        page.valorAPagar.innerHTML = "R$" + tempPedido.pedidoValoraPagar;
-        page.qtdCoxinhaLista.innerHTML = tempPedido.qtdCoxinha;
-        page.valorCoxinhaLista.innerHTML = "R$" +  tempPedido.valorCoxinha;
-        page.qtdKibeLista.innerHTML = tempPedido.qtdKibe;
-        page.valorKibeLista.innerHTML = "R$" + tempPedido.valorKibe;
-        page.qtdCarneLista.innerHTML = tempPedido.qtdCarne;
-        page.valorCarneLista.innerHTML = "R$" + tempPedido.valorCarne;
-        page.qtdMilhoLista.innerHTML = tempPedido.qtdMilho;
-        page.valorMilhoLista.innerHTML = "R$" + tempPedido.valorMilho;
-        page.qtdCarneSecaLista.innerHTML = tempPedido.qtdCarneSeca;
-        page.valorCarneSecaLista.innerHTML = "R$" + tempPedido.valorCarneSeca;
-        page.qtdQSimplesLista.innerHTML = tempPedido.qtdQSimples;
-        page.valorQSimplesLista.innerHTML = "R$" + tempPedido.valorQSimples;
-        page.qtdQAlhoLista.innerHTML = tempPedido.qtdQAlho;
-        page.valorQAlhoLista.innerHTML = "R$" + tempPedido.valorQAlho;
-        page.qtdQOreganoLista.innerHTML = tempPedido.qtdQOregano;
-        page.valorQOreganoLista.innerHTML = "R$" + tempPedido.valorQOregano;
-        page.qtdQAzeitonaLista.innerHTML = tempPedido.qtdQAzeitona;
-        page.valorQAzeitonaLista.innerHTML = "R$" + tempPedido.valorQAzeitona;
-        page.qtdTopBacalhauLista.innerHTML = tempPedido.qtdTopBacalhau;
-        page.valorTopBacalhauLista.innerHTML = "R$" + tempPedido.valorTopBacalhau;
-        page.qtdBacalhauLista.innerHTML = tempPedido.qtdBacalhau;
-        page.valorBacalhauLista.innerHTML = "R$" + tempPedido.valorBacalhau;
-        page.qtdCalabresaLista.innerHTML = tempPedido.qtdCalabresa;
-        page.valorCalabresaLista.innerHTML = "R$" + tempPedido.valorCalabresa;
-        page.qtdSalsichaLista.innerHTML = tempPedido.qtdSalsicha;
-        page.valorSalsichaLista.innerHTML = "R$" + tempPedido.valorSalsicha;
-        page.qtdPresuntoLista.innerHTML = tempPedido.qtdPresunto;
-        page.valorPresuntoLista.innerHTML = "R$" + tempPedido.valorPresunto;
-        page.qtdCamaraoLista.innerHTML = tempPedido.qtdCamarao;
-        page.valorCamaraoLista.innerHTML = "R$" + tempPedido.valorCamarao;
-        page.qtdChurrosLeiteLista.innerHTML = tempPedido.qtdChurrosLeite;
-        page.valorChurrosLeiteLista.innerHTML = "R$" + tempPedido.valorChurrosLeite;
-        page.qtdChurrosChocLeiteLista.innerHTML = tempPedido.qtdChurrosChocLeite;
-        page.valorChurrosChocLeiteLista.innerHTML = "R$" + tempPedido.valorChurrosChocLeite;
-        page.qtdChurrosChocLista.innerHTML = tempPedido.qtdChurrosChocolate;
-        page.valorChurrosChocLista.innerHTML = "R$" + tempPedido.valorChurrosChocolate;
-        page.qtdVariadosLista.innerHTML = tempPedido.qtdVariados
-        page.valorVariadosLista.innerHTML = "R$" + tempPedido.valorVariados
-        page.qtdAipimCarneSecaLista.innerHTML = tempPedido.qtdAipimCarneSeca;
-        page.valorAipimCarneSecaLista.innerHTML = "R$" + tempPedido.valorAipimCarneSeca;
-        page.valorTotal.innerHTML = "R$" + tempPedido.valorTotalPedido;
-        page.obsPedidoLista.innerHTML = tempPedido.obsPedido;
+    if (tempPedido.pedidoValorPago == undefined) tempPedido.pedidoValorPago = 0;
+    page.nomeCliente.innerHTML = tempPedido.pedidoNomeCliente;
+    page.telCliente.innerHTML = "TEL: " + tempPedido.pedidoTelCliente;
+    page.dataCriacao.innerHTML = tempPedido.pedidoDataCriacao;
+    page.dataEntrega.innerHTML = tempPedido.pedidoDataEntrega;
+    page.valorPago.innerHTML = "R$" + tempPedido.pedidoValorPago;
+    page.valorAPagar.innerHTML = "R$" + tempPedido.pedidoValoraPagar;
+    page.qtdCoxinhaLista.innerHTML = tempPedido.qtdCoxinha;
+    page.valorCoxinhaLista.innerHTML = "R$" + tempPedido.valorCoxinha;
+    page.qtdKibeLista.innerHTML = tempPedido.qtdKibe;
+    page.valorKibeLista.innerHTML = "R$" + tempPedido.valorKibe;
+    page.qtdCarneLista.innerHTML = tempPedido.qtdCarne;
+    page.valorCarneLista.innerHTML = "R$" + tempPedido.valorCarne;
+    page.qtdMilhoLista.innerHTML = tempPedido.qtdMilho;
+    page.valorMilhoLista.innerHTML = "R$" + tempPedido.valorMilho;
+    page.qtdCarneSecaLista.innerHTML = tempPedido.qtdCarneSeca;
+    page.valorCarneSecaLista.innerHTML = "R$" + tempPedido.valorCarneSeca;
+    page.qtdQSimplesLista.innerHTML = tempPedido.qtdQSimples;
+    page.valorQSimplesLista.innerHTML = "R$" + tempPedido.valorQSimples;
+    page.qtdQAlhoLista.innerHTML = tempPedido.qtdQAlho;
+    page.valorQAlhoLista.innerHTML = "R$" + tempPedido.valorQAlho;
+    page.qtdQOreganoLista.innerHTML = tempPedido.qtdQOregano;
+    page.valorQOreganoLista.innerHTML = "R$" + tempPedido.valorQOregano;
+    page.qtdQAzeitonaLista.innerHTML = tempPedido.qtdQAzeitona;
+    page.valorQAzeitonaLista.innerHTML = "R$" + tempPedido.valorQAzeitona;
+    page.qtdTopBacalhauLista.innerHTML = tempPedido.qtdTopBacalhau;
+    page.valorTopBacalhauLista.innerHTML = "R$" + tempPedido.valorTopBacalhau;
+    page.qtdBacalhauLista.innerHTML = tempPedido.qtdBacalhau;
+    page.valorBacalhauLista.innerHTML = "R$" + tempPedido.valorBacalhau;
+    page.qtdCalabresaLista.innerHTML = tempPedido.qtdCalabresa;
+    page.valorCalabresaLista.innerHTML = "R$" + tempPedido.valorCalabresa;
+    page.qtdSalsichaLista.innerHTML = tempPedido.qtdSalsicha;
+    page.valorSalsichaLista.innerHTML = "R$" + tempPedido.valorSalsicha;
+    page.qtdPresuntoLista.innerHTML = tempPedido.qtdPresunto;
+    page.valorPresuntoLista.innerHTML = "R$" + tempPedido.valorPresunto;
+    page.qtdCamaraoLista.innerHTML = tempPedido.qtdCamarao;
+    page.valorCamaraoLista.innerHTML = "R$" + tempPedido.valorCamarao;
+    page.qtdChurrosLeiteLista.innerHTML = tempPedido.qtdChurrosLeite;
+    page.valorChurrosLeiteLista.innerHTML = "R$" + tempPedido.valorChurrosLeite;
+    page.qtdChurrosChocLeiteLista.innerHTML = tempPedido.qtdChurrosChocLeite;
+    page.valorChurrosChocLeiteLista.innerHTML = "R$" + tempPedido.valorChurrosChocLeite;
+    page.qtdChurrosChocLista.innerHTML = tempPedido.qtdChurrosChocolate;
+    page.valorChurrosChocLista.innerHTML = "R$" + tempPedido.valorChurrosChocolate;
+    page.qtdVariadosLista.innerHTML = tempPedido.qtdVariados
+    page.valorVariadosLista.innerHTML = "R$" + tempPedido.valorVariados
+    page.qtdAipimCarneSecaLista.innerHTML = tempPedido.qtdAipimCarneSeca;
+    page.valorAipimCarneSecaLista.innerHTML = "R$" + tempPedido.valorAipimCarneSeca;
+    page.qtdAipimCarneLista.innerHTML = tempPedido.qtdAipimCarne;
+    page.valorAipimCarneLista.innerHTML = "R$" + tempPedido.valorAipimCarne;
+    page.qtdPizzaLista.innerHTML = tempPedido.qtdPizza;
+    page.valorPizzaLista.innerHTML = "R$" + tempPedido.valorPizza;
+    page.valorTotal.innerHTML = "R$" + tempPedido.valorTotalPedido;
+    page.obsPedidoLista.innerHTML = tempPedido.obsPedido;
 }
 
 function limparTabelaPedido() {
