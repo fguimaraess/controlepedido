@@ -8,6 +8,8 @@ var page = {
     btnVoltar: document.querySelector("#btnVoltar"),
     btnCriarPedido: document.querySelector("#btnCriarPedido"),
     btnBuscarPedido: document.querySelector("#btnBuscarPedido"),
+    btnBuscarPedidoEntrega: document.querySelector("#btnBuscarPedidoEntrega"),
+    searchPedidoDataEntrega: document.querySelector("#data-entrega-field"),
     searchPedidoData: document.querySelector("#data-inicio-field"),
     nomeCliente: document.querySelector("#nomeCliente"),
     telCliente: document.querySelector("#telCliente"),
@@ -155,6 +157,20 @@ page.btnBuscarPedido.addEventListener('click', function () {
             preencheTabelaPedido(page.pedidos[key]);
         }
         if (dataCriacao == "") {
+            preencheTabelaPedido(page.pedidos[key]);
+        }
+    }
+});
+
+page.btnBuscarPedidoEntrega.addEventListener('click', function () {
+    limparTabelaPedido();
+    var dataEntrega = $(page.searchPedidoDataEntrega).val();
+    for (var key in page.pedidos) {
+        var dataPedido = page.pedidos[key].pedidoDataEntrega;
+        if (dataEntrega == dataPedido) {
+            preencheTabelaPedido(page.pedidos[key]);
+        }
+        if (dataEntrega == "") {
             preencheTabelaPedido(page.pedidos[key]);
         }
     }
